@@ -1,0 +1,3 @@
+CREATE DATABASE todolist_project;
+CREATE USER todolist WITH ENCRYPTED PASSWORD '123';
+GRANT ALL PRIVILEGES ON DATABASE todolist_project TO todolist;
