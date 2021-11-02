@@ -3,5 +3,3 @@ create table tasks (
     title text not null,
     done boolean not null default false
 );
-
-create sequence
