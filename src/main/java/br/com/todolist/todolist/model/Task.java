@@ -3,6 +3,8 @@ package br.com.todolist.todolist.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,6 +32,7 @@ public class Task implements Serializable {
 
   @ManyToOne
   @JoinColumn(name = "project_id")
+  @JsonIgnoreProperties({"tasks"})
   private Project project;
 
   @Override

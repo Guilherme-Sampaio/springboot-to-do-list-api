@@ -32,6 +32,11 @@ public class TaskController {
     return repository.findAll();
   }
 
+  @GetMapping(path = "/project/{id}")
+  public List<Task> findByProject(@PathVariable("id") Long id) {
+    return repository.findByProjectId(id);
+  }
+
   @GetMapping(path = "/{id}")
   public Optional<Task> findById(@PathVariable("id") Long id) {
     return repository.findById(id);
