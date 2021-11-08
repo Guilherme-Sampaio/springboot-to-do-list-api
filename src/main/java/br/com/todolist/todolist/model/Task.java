@@ -3,11 +3,15 @@ package br.com.todolist.todolist.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -26,12 +30,18 @@ public class Task implements Serializable {
   @Column
   private boolean done;
 
+  @ManyToOne
+  @JoinColumn(name = "project_id")
+  @JsonIgnoreProperties({"tasks"})
+  private Project project;
+
   @Override
   public String toString() {
     return "Task{" +
         "id=" + id +
         ", title='" + title + '\'' +
         ", done=" + done +
+        ", project=" + project +
         '}';
   }
 
@@ -70,5 +80,13 @@ public class Task implements Serializable {
 
   public void setDone(boolean done) {
     this.done = done;
+  }
+
+  public Project getProject() {
+    return project;
+  }
+
+  public void setProject(Project project) {
+    this.project = project;
   }
 }

@@ -3,8 +3,8 @@ package br.com.todolist.todolist.controller;
 import java.util.List;
 import java.util.Optional;
 
-import br.com.todolist.todolist.model.Task;
-import br.com.todolist.todolist.repository.TaskRepository;
+import br.com.todolist.todolist.model.Project;
+import br.com.todolist.todolist.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,39 +17,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/task", consumes = "application/json", produces = "application/json")
-public class TaskController {
+@RequestMapping(value = "/project", consumes = "application/json", produces = "application/json")
+public class ProjectController {
 
-  private final TaskRepository repository;
+  private final ProjectRepository repository;
 
   @Autowired
-  public TaskController(TaskRepository repository) {
+  public ProjectController(ProjectRepository repository) {
     this.repository = repository;
   }
 
   @GetMapping(path = "/all")
-  public List<Task> findAll() {
+  public List<Project> findAll() {
     return repository.findAll();
   }
 
-  @GetMapping(path = "/project/{id}")
-  public List<Task> findByProject(@PathVariable("id") Long id) {
-    return repository.findByProjectId(id);
-  }
-
   @GetMapping(path = "/{id}")
-  public Optional<Task> findById(@PathVariable("id") Long id) {
+  public Optional<Project> findById(@PathVariable("id") Long id) {
     return repository.findById(id);
   }
 
   @PostMapping
-  public Task save(@RequestBody Task task) {
-    return repository.save(task);
+  public Project save(@RequestBody Project project) {
+    return repository.save(project);
   }
 
   @PutMapping
-  public Task update(@RequestBody Task task) {
-    return repository.save(task);
+  public Project update(@RequestBody Project project) {
+    return repository.save(project);
   }
 
   @DeleteMapping(path = "/{id}")
@@ -57,6 +52,4 @@ public class TaskController {
     repository.deleteById(id);
     return ResponseEntity.noContent().build();
   }
-
-
 }
