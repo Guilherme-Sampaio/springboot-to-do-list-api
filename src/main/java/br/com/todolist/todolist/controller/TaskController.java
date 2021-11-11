@@ -6,15 +6,9 @@ import java.util.Optional;
 import br.com.todolist.todolist.model.Task;
 import br.com.todolist.todolist.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/task", consumes = "application/json", produces = "application/json")
@@ -57,6 +51,19 @@ public class TaskController {
     repository.deleteById(id);
     return ResponseEntity.noContent().build();
   }
+  @PatchMapping(path = "/{id}/set-as-done", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Task setAsDone(@PathVariable("id") Long id) {
+    var task = repository.findById(id).orElseThrow(IllegalArgumentException::new);
+    task.setDone(true);
+    return repository.save(task);
+  }
+  @PatchMapping(path = "/{id}/set-as-pending", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Task setAsPending(@PathVariable("id") Long id) {
+    var task = repository.findById(id).orElseThrow(IllegalArgumentException::new);
+    task.setDone(false);
+    return repository.save(task);
+  }
+
 
 
 }
