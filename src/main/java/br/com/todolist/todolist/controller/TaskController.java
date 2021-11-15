@@ -37,6 +37,11 @@ public class TaskController {
     return repository.findByProjectId(id);
   }
 
+  @GetMapping(path = "/project/")
+  public List<Task> findTasksWithoutProject() {
+    return repository.findByProjectIsNull();
+  }
+
   @GetMapping(path = "/{id}")
   public Optional<Task> findById(@PathVariable("id") Long id) {
     return repository.findById(id);
