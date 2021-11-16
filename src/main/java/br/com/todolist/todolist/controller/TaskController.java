@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,7 +35,12 @@ public class TaskController {
 
   @GetMapping(path = "/project/{id}")
   public List<Task> findByProject(@PathVariable("id") Long id) {
-    return repository.findByProjectId(id);
+    return repository.findByProjectIdOrderById(id);
+  }
+
+  @GetMapping(path = "/project/")
+  public List<Task> findTasksWithoutProject() {
+    return repository.findByProjectIsNullOrderById();
   }
 
   @GetMapping(path = "/{id}")
@@ -44,6 +50,22 @@ public class TaskController {
 
   @PostMapping
   public Task save(@RequestBody Task task) {
+    return repository.save(task);
+  }
+
+  @PatchMapping(path = "/{id}/done")
+  public Task setAsDone(@PathVariable("id") Long id) {
+    Task task = repository.getById(id);
+    task.setDone(true);
+
+    return repository.save(task);
+  }
+
+  @PatchMapping(path = "/{id}/pending")
+  public Task setAsPending(@PathVariable("id") Long id) {
+    Task task = repository.getById(id);
+    task.setDone(false);
+
     return repository.save(task);
   }
 

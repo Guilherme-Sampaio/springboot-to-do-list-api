@@ -3,8 +3,8 @@ package br.com.todolist.todolist.controller;
 import java.util.List;
 import java.util.Optional;
 
-import br.com.todolist.todolist.model.Project;
-import br.com.todolist.todolist.repository.ProjectRepository;
+import br.com.todolist.todolist.model.Comment;
+import br.com.todolist.todolist.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,34 +17,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/project", consumes = "application/json", produces = "application/json")
-public class ProjectController {
+@RequestMapping(value = "/comment", consumes = "application/json", produces = "application/json")
+public class CommentController {
 
-  private final ProjectRepository repository;
+  private final CommentRepository repository;
 
   @Autowired
-  public ProjectController(ProjectRepository repository) {
+  public CommentController(CommentRepository repository) {
     this.repository = repository;
   }
 
   @GetMapping(path = "/all")
-  public List<Project> findAll() {
-    return repository.findAllByOrderById();
+  public List<Comment> findAll() {
+    return repository.findAll();
+  }
+
+  @GetMapping(path = "/task/{id}")
+  public List<Comment> findByTaskId(@PathVariable("id") Long id) {
+    return repository.findByTaskIdOrderById(id);
   }
 
   @GetMapping(path = "/{id}")
-  public Optional<Project> findById(@PathVariable("id") Long id) {
+  public Optional<Comment> findById(@PathVariable("id") Long id) {
     return repository.findById(id);
   }
 
   @PostMapping
-  public Project save(@RequestBody Project project) {
-    return repository.save(project);
+  public Comment save(@RequestBody Comment comment) {
+    return repository.save(comment);
   }
 
   @PutMapping
-  public Project update(@RequestBody Project project) {
-    return repository.save(project);
+  public Comment update(@RequestBody Comment comment) {
+    return repository.save(comment);
   }
 
   @DeleteMapping(path = "/{id}")
@@ -52,4 +57,6 @@ public class ProjectController {
     repository.deleteById(id);
     return ResponseEntity.noContent().build();
   }
+
+
 }

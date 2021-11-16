@@ -1,6 +1,7 @@
 package br.com.todolist.todolist.model;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -35,6 +37,9 @@ public class Task implements Serializable {
   @JsonIgnoreProperties({"tasks"})
   private Project project;
 
+  @OneToMany(mappedBy = "task")
+  private List<Comment> comments;
+
   @Override
   public String toString() {
     return "Task{" +
@@ -42,6 +47,7 @@ public class Task implements Serializable {
         ", title='" + title + '\'' +
         ", done=" + done +
         ", project=" + project +
+        ", comments=" + comments +
         '}';
   }
 
@@ -88,5 +94,13 @@ public class Task implements Serializable {
 
   public void setProject(Project project) {
     this.project = project;
+  }
+
+  public List<Comment> getComments() {
+    return comments;
+  }
+
+  public void setComments(List<Comment> comments) {
+    this.comments = comments;
   }
 }
