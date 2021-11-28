@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import br.com.todolist.todolist.model.Task;
 import br.com.todolist.todolist.repository.TaskRepository;
+import br.com.todolist.todolist.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,10 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TaskController {
 
   private final TaskRepository repository;
+  private final TaskService service;
 
   @Autowired
-  public TaskController(TaskRepository repository) {
+  public TaskController(TaskRepository repository, TaskService service) {
     this.repository = repository;
+    this.service = service;
   }
 
   @GetMapping(path = "/all")
@@ -36,6 +39,36 @@ public class TaskController {
   @GetMapping(path = "/project/{id}")
   public List<Task> findByProject(@PathVariable("id") Long id) {
     return repository.findByProjectIdOrderById(id);
+  }
+
+  @GetMapping(path = "/project/{id}/today")
+  public List<Task> findTodayTasksByProject(@PathVariable("id") Long id) {
+    return service.findTodayTasks(id);
+  }
+
+  @GetMapping(path = "/project/{id}/week")
+  public List<Task> findNextWeekTasksByProject(@PathVariable("id") Long id) {
+    return service.findWeekTasks(id);
+  }
+
+  @GetMapping(path = "/project/{id}/distant")
+  public List<Task> findMoreThanOneWeekTasksByProject(@PathVariable("id") Long id) {
+    return service.findMoreThanOneWeekTasks(id);
+  }
+
+  @GetMapping(path = "/project/today")
+  public List<Task> findTodayTasksByProject() {
+    return service.findTodayTasks(null);
+  }
+
+  @GetMapping(path = "/project/week")
+  public List<Task> findNextWeekTasksByProject() {
+    return service.findWeekTasks(null);
+  }
+
+  @GetMapping(path = "/project/distant")
+  public List<Task> findMoreThanOneWeekTasksByProject() {
+    return service.findMoreThanOneWeekTasks(null);
   }
 
   @GetMapping(path = "/project/")
