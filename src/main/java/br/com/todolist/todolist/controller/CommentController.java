@@ -57,6 +57,4 @@ public class CommentController {
     repository.deleteById(id);
     return ResponseEntity.noContent().build();
   }
-
-
 }
