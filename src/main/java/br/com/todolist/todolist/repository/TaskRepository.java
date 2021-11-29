@@ -14,7 +14,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
   List<Task> findByProjectIdOrderById(Long projectId);
 
-  List<Task> findByProjectIdAndSelectedDateOrderBySelectedDate(Long projectId, Date selectedDate);
+  List<Task> findByProjectIsNullOrderById();
 
   @Query(value = "select id, title, done, project_id, selected_date from tasks "
                + "where project_id = :projectId "
@@ -28,5 +28,16 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
   List<Task> findTaskWithoutProjectByDateInterval(@Param("firstDate") Date firstDate,
       @Param("secondDate") Date secondDate);
 
-  List<Task> findByProjectIsNullOrderById();
+  @Query(value = "select id, title, done, project_id, selected_date from tasks "
+      + "where project_id = :projectId "
+      + "and (selected_date < :todayDate "
+      + "or selected_date is null)", nativeQuery = true)
+  List<Task> findTaskWithExpiredOrNullDate(@Param("projectId") Long projectId, @Param("todayDate") Date todayDate);
+
+  @Query(value = "select id, title, done, project_id, selected_date from tasks "
+      + "where project_id is null "
+      + "and (selected_date < :todayDate "
+      + "or selected_date is null)", nativeQuery = true)
+  List<Task> findTaskWithExpiredOrNullDateWithoutProject(@Param("todayDate") Date todayDate);
+
 }

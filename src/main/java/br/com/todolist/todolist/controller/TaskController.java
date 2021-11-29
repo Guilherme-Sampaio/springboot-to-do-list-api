@@ -56,6 +56,11 @@ public class TaskController {
     return service.findMoreThanOneWeekTasks(id);
   }
 
+  @GetMapping(path = "/project/{id}/others")
+  public List<Task> findExpiredOrNullTasksByProject(@PathVariable("id") Long id) {
+    return service.findTasksWithExpiredOrNullDate(id);
+  }
+
   @GetMapping(path = "/project/today")
   public List<Task> findTodayTasksByProject() {
     return service.findTodayTasks(null);
@@ -69,6 +74,11 @@ public class TaskController {
   @GetMapping(path = "/project/distant")
   public List<Task> findMoreThanOneWeekTasksByProject() {
     return service.findMoreThanOneWeekTasks(null);
+  }
+
+  @GetMapping(path = "/project/others")
+  public List<Task> findExpiredOrNullTasksWithoutProject() {
+    return service.findTasksWithExpiredOrNullDate(null);
   }
 
   @GetMapping(path = "/project/")

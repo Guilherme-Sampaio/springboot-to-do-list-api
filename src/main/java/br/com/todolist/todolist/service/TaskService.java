@@ -46,6 +46,16 @@ public class TaskService {
     return repository.findTaskWithoutProjectByDateInterval(initialDate, finalDate);
   }
 
+  public List<Task> findTasksWithExpiredOrNullDate(Long projectId) {
+    Date todayDate = new Date();
+
+    if (projectId != null) {
+      return repository.findTaskWithExpiredOrNullDate(projectId, todayDate);
+    }
+    return repository.findTaskWithExpiredOrNullDateWithoutProject(todayDate);
+  }
+
+
   private Date addDays (Date date, int days) {
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(date);
