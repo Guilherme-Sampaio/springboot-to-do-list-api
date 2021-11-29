@@ -1,10 +1,12 @@
 package br.com.todolist.todolist.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,6 +42,9 @@ public class Task implements Serializable {
   @OneToMany(mappedBy = "task")
   private List<Comment> comments;
 
+  @Column
+  private Date selectedDate;
+
   @Override
   public String toString() {
     return "Task{" +
@@ -48,6 +53,7 @@ public class Task implements Serializable {
         ", done=" + done +
         ", project=" + project +
         ", comments=" + comments +
+        ", selectedDate=" + selectedDate +
         '}';
   }
 
@@ -102,5 +108,13 @@ public class Task implements Serializable {
 
   public void setComments(List<Comment> comments) {
     this.comments = comments;
+  }
+
+  public Date getSelectedDate() {
+    return selectedDate;
+  }
+
+  public void setSelectedDate(Date selectedDate) {
+    this.selectedDate = selectedDate;
   }
 }
